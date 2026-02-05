@@ -1,0 +1,26 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "xamp_fire_source-rers",
+  "main": "main.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel tailwind:watch esbuild:serve",
+    "build": "npm-run-all tailwind:build esbuild:build",
+    "tailwind:watch": "tailwindcss -i input.css -o output.css --watch",
+    "tailwind:build": "tailwindcss -i input.css -o output.css",
+    "esbuild:serve": "esbuild main.js --bundle --platform=browser --format=esm --outfile=./app.js --servedir=.",
+    "esbuild:watch": "esbuild main.js --bundle --platform=browser --format=esm --outfile=./app.js --watch",
+    "esbuild:build": "esbuild main.js --bundle --platform=browser --format=esm --outfile=./app.js --minify"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.27.2"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "npm-run-all": "^4.1.5",
+    "tailwindcss": "^4.0.0"
+
+  }
+}
