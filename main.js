@@ -26,7 +26,7 @@ const PROJECTS = [
         },
         imageUrl: "./assets/images/templator.png",
         version: "v1.2.0",
-        size: "45 MB"
+        size: "Varies by platform"
     },
     {
         id: 2,
@@ -72,7 +72,7 @@ const PROJECTS = [
         },
             imageUrl: "./assets/images/branch.png",
         version: "v1.0.0",
-        size: "28 MB"
+        size: "Varies by platform"
     }
 ];
 
