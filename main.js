@@ -1,13 +1,29 @@
 // main.js - Xamp Fire Projects (ES Module Compatible)
 import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js';
 
-// PROJECT DATA with cross-platform downloads
+// SECTION SUMMARIES
+const SECTION_SUMMARIES = {
+    officeautos: {
+        title: "🏢 OfficeAutos",
+        summary: "Automated office workflows for everyday heroes. We use familiar tech (JavaScript/HTML/CSS + Rust) wrapped in Tauri for cross-platform magic. No Swift trauma here — just practical tools that actually work for secretaries, admins, and everyday office heroes. Why disturb A.I everyday with the same queries when you can just automate? It's eco-friendly and reduces prompt cost!",
+        emoji: "✨"
+    },
+    devsection: {
+        title: "👨‍💻 Dev Section",
+        summary: "Developer tools that make coding less painful. Visual code exploration, file management, and project navigation tools built with the same philosophy — familiar tech, cross-platform, and actually useful. Perfect for understanding legacy codebases or teaching Git concepts visually.",
+        emoji: "🚀"
+    }
+};
+
+// PROJECT DATA with cross-platform downloads and sections
 const PROJECTS = [
     {
         id: 1,
         name: "Templator X",
         description: "DOCX Batch Generator - Create multiple documents from templates and CSV data instantly",
         category: "Productivity",
+        section: "officeautos",
+        sectionName: "OfficeAutos",
         features: ["Batch document generation", "CSV/Excel data integration", "Quick templates", "Preview support"],
         downloads: {
             windows: [
@@ -33,6 +49,8 @@ const PROJECTS = [
         name: "FileCanvas",
         description: "Advanced file management with visual canvas interface and powerful organization tools",
         category: "File Management",
+        section: "officeautos",
+        sectionName: "OfficeAutos",
         features: ["Visual file organization", "Drag & drop interface", "File preview", "Smart sorting"],
         downloads: {
             windows: [
@@ -58,19 +76,21 @@ const PROJECTS = [
         name: "Branch",
         description: "Code tree visualization and management tool for developers",
         category: "Development",
+        section: "devsection",
+        sectionName: "Dev Section",
         features: ["Code tree visualization", "File search", "Syntax highlighting", "Project navigation"],
         downloads: {
             windows: [
-                { name: "Windows BInary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-windows-x86_64.exe", size: "16.7  MB", sha256: "" }
+                { name: "Windows Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-windows-x86_64.exe", size: "16.7 MB", sha256: "" }
             ],
             mac: [
                 { name: "Mac Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-macos-x86_64", size: "16.3 MB", sha256: "" }
             ],
             linux: [
-                { name: "Linux binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-linux-x86_64", size: "18.2 MB", sha256: "" }
+                { name: "Linux Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-linux-x86_64", size: "18.2 MB", sha256: "" }
             ]
         },
-            imageUrl: "./assets/images/branch.png",
+        imageUrl: "./assets/images/branch.png",
         version: "v1.0.0",
         size: "Varies by platform"
     }
@@ -86,9 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.showFeedbackModal = showFeedbackModal;
     window.closeFeedbackModal = closeFeedbackModal;
 
-    // Setup event listeners (better than inline handlers)
+    // Setup event listeners
     document.addEventListener('click', (e) => {
-        // Close modals when clicking outside
         if (e.target.id === 'downloadModal') closeDownloadModal();
         if (e.target.id === 'feedbackModal') closeFeedbackModal();
     });
@@ -99,19 +118,76 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackForm.addEventListener('submit', handleFeedbackSubmit);
     }
 
-    // Render projects
-    renderProjects();
+    // Render projects grouped by section
+    renderProjectsBySection();
 });
 
-// RENDER PROJECTS GRID
-function renderProjects() {
+// RENDER PROJECTS BY SECTION
+function renderProjectsBySection() {
     const container = document.getElementById('projects-container');
     if (!container) return;
-    
-    container.innerHTML = PROJECTS.map(project => `
+
+    // Group projects by section
+    const sections = {};
+    PROJECTS.forEach(project => {
+        if (!sections[project.section]) {
+            sections[project.section] = {
+                name: project.sectionName,
+                projects: []
+            };
+        }
+        sections[project.section].projects.push(project);
+    });
+
+    // Render sections in order
+    const sectionOrder = ['officeautos', 'devsection'];
+    let html = '';
+
+    sectionOrder.forEach(sectionKey => {
+        if (sections[sectionKey]) {
+            const section = sections[sectionKey];
+            const summary = SECTION_SUMMARIES[sectionKey];
+            
+            // Section header with summary
+            html += `
+                <div class="col-span-full">
+                    <div class="mb-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h3 class="text-2xl font-bold text-gray-900">${summary.title || section.name}</h3>
+                            <span class="text-2xl">${summary.emoji || '✨'}</span>
+                        </div>
+                        <div class="h-1 w-20 bg-purple-600 rounded-full mb-4"></div>
+                        <p class="text-gray-700 leading-relaxed max-w-3xl">
+                            ${summary.summary || ''}
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Section projects
+            section.projects.forEach(project => {
+                html += createProjectCard(project);
+            });
+        }
+    });
+
+    container.innerHTML = html;
+
+    // Attach event listeners to download buttons
+    document.querySelectorAll('.download-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const projectId = e.currentTarget.getAttribute('data-project-id');
+            showDownloadModal(parseInt(projectId));
+        });
+    });
+}
+
+// CREATE PROJECT CARD HTML
+function createProjectCard(project) {
+    return `
         <div class="card-hover bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <div class="relative">
-                <img src="${project.imageUrl}" alt="${project.name}" class="w-full h-48 object-cover">
+                <img src="${project.imageUrl}" alt="${project.name}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x200/667eea/ffffff?text=${encodeURIComponent(project.name)}'">
                 <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">
                     ${project.category}
                 </span>
@@ -147,16 +223,10 @@ function renderProjects() {
                 </div>
             </div>
         </div>
-    `).join('');
-    
-    // Attach event listeners to download buttons (avoids inline handlers)
-    document.querySelectorAll('.download-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const projectId = e.currentTarget.getAttribute('data-project-id');
-            showDownloadModal(parseInt(projectId));
-        });
-    });
+    `;
 }
+
+// ... REST OF YOUR FUNCTIONS REMAIN THE SAME ...
 
 // DOWNLOAD MODAL
 function showDownloadModal(projectId) {
@@ -183,13 +253,11 @@ function showDownloadModal(projectId) {
         `;
         document.body.appendChild(modal);
         
-        // Setup close button listener
         modal.querySelector('.close-download-modal').addEventListener('click', closeDownloadModal);
     } else {
         modal.classList.remove('hidden');
     }
 
-    // Detect user's OS
     const userOS = detectOS();
     const downloadContent = document.getElementById('downloadContent');
     
@@ -363,7 +431,6 @@ function detectOS() {
 
 // DOWNLOAD HANDLER
 function handleDownload(url, projectName) {
-    // Trim URL to fix trailing space issue in your data
     const cleanUrl = url.trim();
     
     if (!cleanUrl || cleanUrl === '#') {
