@@ -1,104 +1,10 @@
-// main.js - Xamp Fire Projects (ES Module Compatible)
+// website/main.js - Main application logic (ES Module)
 import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js';
-
-// SECTION SUMMARIES
-const SECTION_SUMMARIES = {
-    officeautos: {
-        title: "🏢 OfficeAutos",
-        summary: "Automated office workflows for everyday heroes. We use familiar tech (JavaScript/HTML/CSS + Rust) wrapped in Tauri for cross-platform magic. No Swift trauma here — just practical tools that actually work for secretaries, admins, and everyday office heroes. Why disturb A.I everyday with the same queries when you can just automate? It's eco-friendly and reduces prompt cost!",
-        emoji: "✨"
-    },
-    devsection: {
-        title: "👨‍💻 Dev Section",
-        summary: "Developer tools that make coding less painful. Visual code exploration, file management, and project navigation tools built with the same philosophy — familiar tech, cross-platform, and actually useful. Perfect for understanding legacy codebases or teaching Git concepts visually.",
-        emoji: "🚀"
-    }
-};
-
-// PROJECT DATA with cross-platform downloads and sections
-const PROJECTS = [
-    {
-        id: 1,
-        name: "Templator X",
-        description: "DOCX Batch Generator - Create multiple documents from templates and CSV data instantly",
-        category: "Productivity",
-        section: "officeautos",
-        sectionName: "OfficeAutos",
-        features: ["Batch document generation", "CSV/Excel data integration", "Quick templates", "Preview support"],
-        downloads: {
-            windows: [
-                { name: "Setup (EXE)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x_0.1.0_x64-setup.exe", size: "3.15 MB", sha256: "b4c69401c241bcacd8923b33e9036916b8eabc1ca64d15b42307efc1505d8aa7" },
-                { name: "Installer (MSI)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x_0.1.0_x64_en-US.msi", size: "4.55 MB", sha256: "f8cf27babb00ef1a80b58d2cb26e76ea8d86e81e9baa3b86b7080cc40c946d1e" }
-            ],
-            mac: [
-                { name: "Universal DMG", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x_0.1.0_universal.dmg", size: "9.19 MB", sha256: "a0d40169bf3fe2a8148e441fa634395cc6f8ea636a93004271344f7e8f9660c5" },
-                { name: "App Bundle (tar.gz)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x_universal.app.tar.gz", size: "9.11 MB", sha256: "ba9e282b004468a5521d1b2fc8af4e39156bdd6187f95cca62885b805cd7b0e0" }
-            ],
-            linux: [
-                { name: "Debian/Ubuntu (.deb)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x_0.1.0_amd64.deb", size: "4.87 MB", sha256: "6fba19ac3fdb5ec2c0555146a5411badbb3c1fbfff4c586c5cc92098a39593c4" },
-                { name: "Fedora/RHEL (.rpm)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x-0.1.0-1.x86_64.rpm", size: "4.87 MB", sha256: "7769fcfdf3cd7648a5051322abc911da7152852815f6d08eee4013d3a3b816b2" },
-                { name: "AppImage", url: "https://github.com/butterman28/Offiice_Autos/releases/download/tx-v1.0.0/templator-x_0.1.0_amd64.AppImage", size: "76.1 MB", sha256: "5b6860f1731332dfdf91913fe2fbbd1ac783c08a849a36ef9d1a66183a3153ae" }
-            ]
-        },
-        imageUrl: "./assets/images/templator.png",
-        version: "v1.2.0",
-        size: "Varies by platform"
-    },
-    {
-        id: 2,
-        name: "FileCanvas",
-        description: "Advanced file management with visual canvas interface and powerful organization tools",
-        category: "File Management",
-        section: "officeautos",
-        sectionName: "OfficeAutos",
-        features: ["Visual file organization", "Drag & drop interface", "File preview", "Smart sorting"],
-        downloads: {
-            windows: [
-                { name: "Setup (EXE)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas_0.1.0_x64-setup.exe", size: "2.56 MB", sha256: "b4c69401c241bcacd8923b33e9036916b8eabc1ca64d15b42307efc1505d8aa7" },
-                { name: "Installer (MSI)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas_0.1.0_x64_en-US.msi", size: "3.92 MB", sha256: "f8cf27babb00ef1a80b58d2cb26e76ea8d86e81e9baa3b86b7080cc40c946d1e" }
-            ],
-            mac: [
-                { name: "Universal DMG", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas_0.1.0_universal.dmg", size: "7.98 MB", sha256: "a0d40169bf3fe2a8148e441fa634395cc6f8ea636a93004271344f7e8f9660c5" },
-                { name: "App Bundle (tar.gz)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas_universal.app.tar.gz", size: "7.91 MB", sha256: "ba9e282b004468a5521d1b2fc8af4e39156bdd6187f95cca62885b805cd7b0e0" }
-            ],
-            linux: [
-                { name: "Debian/Ubuntu (.deb)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas_0.1.0_amd64.deb", size: "4.1 MB", sha256: "6fba19ac3fdb5ec2c0555146a5411badbb3c1fbfff4c586c5cc92098a39593c4" },
-                { name: "Fedora/RHEL (.rpm)", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas-0.1.0-1.x86_64.rpm", size: "4.1 MB", sha256: "7769fcfdf3cd7648a5051322abc911da7152852815f6d08eee4013d3a3b816b2" },
-                { name: "AppImage", url: "https://github.com/butterman28/Offiice_Autos/releases/download/v0.2.0/filecanvas_0.1.0_amd64.AppImage", size: "73.3 MB", sha256: "5b6860f1731332dfdf91913fe2fbbd1ac783c08a849a36ef9d1a66183a3153ae" }
-            ]
-        },
-        imageUrl: "./assets/images/filecanvas.png",
-        version: "v1.0.0",
-        size: "Varies by platform"
-    },
-    {
-        id: 3,
-        name: "Branch",
-        description: "Code tree visualization and management tool for developers",
-        category: "Development",
-        section: "devsection",
-        sectionName: "Dev Section",
-        features: ["Code tree visualization", "File search", "Syntax highlighting", "Project navigation"],
-        downloads: {
-            windows: [
-                { name: "Windows Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-windows-x86_64.exe", size: "16.7 MB", sha256: "" }
-            ],
-            mac: [
-                { name: "Mac Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-macos-x86_64", size: "16.3 MB", sha256: "" }
-            ],
-            linux: [
-                { name: "Linux Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-linux-x86_64", size: "18.2 MB", sha256: "" }
-            ]
-        },
-        imageUrl: "./assets/images/branch.png",
-        version: "v1.0.0",
-        size: "Varies by platform"
-    }
-];
+import { SECTION_SUMMARIES, PROJECTS } from './data.js';
 
 // DOM-READY INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
-    // Add global functions to window for inline handlers
+    // Expose functions to window for inline HTML handlers
     window.showDownloadModal = showDownloadModal;
     window.closeDownloadModal = closeDownloadModal;
     window.togglePlatform = togglePlatform;
@@ -106,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.showFeedbackModal = showFeedbackModal;
     window.closeFeedbackModal = closeFeedbackModal;
 
-    // Setup event listeners
+    // Setup global event listeners
     document.addEventListener('click', (e) => {
         if (e.target.id === 'downloadModal') closeDownloadModal();
         if (e.target.id === 'feedbackModal') closeFeedbackModal();
@@ -118,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackForm.addEventListener('submit', handleFeedbackSubmit);
     }
 
-    // Render projects grouped by section
+    // Render projects
     renderProjectsBySection();
 });
 
@@ -226,8 +132,6 @@ function createProjectCard(project) {
     `;
 }
 
-// ... REST OF YOUR FUNCTIONS REMAIN THE SAME ...
-
 // DOWNLOAD MODAL
 function showDownloadModal(projectId) {
     const project = PROJECTS.find(p => p.id === projectId);
@@ -237,7 +141,7 @@ function showDownloadModal(projectId) {
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'downloadModal';
-        modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+        modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden';
         modal.innerHTML = `
             <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
                 <div class="flex justify-between items-center p-6 border-b">
@@ -254,9 +158,9 @@ function showDownloadModal(projectId) {
         document.body.appendChild(modal);
         
         modal.querySelector('.close-download-modal').addEventListener('click', closeDownloadModal);
-    } else {
-        modal.classList.remove('hidden');
     }
+    
+    modal.classList.remove('hidden');
 
     const userOS = detectOS();
     const downloadContent = document.getElementById('downloadContent');
@@ -271,103 +175,13 @@ function showDownloadModal(projectId) {
             ` : ''}
 
             <!-- Windows Downloads -->
-            <div class="border rounded-lg overflow-hidden">
-                <div class="bg-gray-50 px-4 py-3 flex items-center justify-between cursor-pointer toggle-platform" data-platform="windows">
-                    <div class="flex items-center space-x-3">
-                        <i class="fab fa-windows text-blue-600 text-2xl"></i>
-                        <span class="font-semibold">Windows</span>
-                    </div>
-                    <i class="fas fa-chevron-down transition-transform" id="windows-icon"></i>
-                </div>
-                <div id="windows-downloads" class="p-4 space-y-3 hidden">
-                    ${project.downloads.windows.map(download => `
-                        <div class="border rounded-lg p-3 hover:bg-gray-50 transition">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <div class="font-medium">${download.name}</div>
-                                    <div class="text-sm text-gray-600 mt-1">${download.size}</div>
-                                </div>
-                                <button class="download-file bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition" 
-                                        data-url="${download.url}" 
-                                        data-name="${project.name}">
-                                    Download
-                                </button>
-                            </div>
-                            ${download.sha256 ? `
-                                <div class="mt-2 text-xs text-gray-500">
-                                    SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${renderPlatformSection('windows', 'fab fa-windows text-blue-600', 'Windows', project.downloads.windows)}
 
             <!-- macOS Downloads -->
-            <div class="border rounded-lg overflow-hidden">
-                <div class="bg-gray-50 px-4 py-3 flex items-center justify-between cursor-pointer toggle-platform" data-platform="mac">
-                    <div class="flex items-center space-x-3">
-                        <i class="fab fa-apple text-gray-800 text-2xl"></i>
-                        <span class="font-semibold">macOS</span>
-                    </div>
-                    <i class="fas fa-chevron-down transition-transform" id="mac-icon"></i>
-                </div>
-                <div id="mac-downloads" class="p-4 space-y-3 hidden">
-                    ${project.downloads.mac.map(download => `
-                        <div class="border rounded-lg p-3 hover:bg-gray-50 transition">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <div class="font-medium">${download.name}</div>
-                                    <div class="text-sm text-gray-600 mt-1">${download.size}</div>
-                                </div>
-                                <button class="download-file bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition" 
-                                        data-url="${download.url}" 
-                                        data-name="${project.name}">
-                                    Download
-                                </button>
-                            </div>
-                            ${download.sha256 ? `
-                                <div class="mt-2 text-xs text-gray-500">
-                                    SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${renderPlatformSection('mac', 'fab fa-apple text-gray-800', 'macOS', project.downloads.mac)}
 
             <!-- Linux Downloads -->
-            <div class="border rounded-lg overflow-hidden">
-                <div class="bg-gray-50 px-4 py-3 flex items-center justify-between cursor-pointer toggle-platform" data-platform="linux">
-                    <div class="flex items-center space-x-3">
-                        <i class="fab fa-linux text-gray-800 text-2xl"></i>
-                        <span class="font-semibold">Linux</span>
-                    </div>
-                    <i class="fas fa-chevron-down transition-transform" id="linux-icon"></i>
-                </div>
-                <div id="linux-downloads" class="p-4 space-y-3 hidden">
-                    ${project.downloads.linux.map(download => `
-                        <div class="border rounded-lg p-3 hover:bg-gray-50 transition">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <div class="font-medium">${download.name}</div>
-                                    <div class="text-sm text-gray-600 mt-1">${download.size}</div>
-                                </div>
-                                <button class="download-file bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition" 
-                                        data-url="${download.url}" 
-                                        data-name="${project.name}">
-                                    Download
-                                </button>
-                            </div>
-                            ${download.sha256 ? `
-                                <div class="mt-2 text-xs text-gray-500">
-                                    SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
+            ${renderPlatformSection('linux', 'fab fa-linux text-gray-800', 'Linux', project.downloads.linux, project.name)}
 
             <div class="text-center text-sm text-gray-500 pt-4 border-t">
                 <p>Having trouble? <a href="#contact" class="text-purple-600 hover:text-purple-700">Contact us</a></p>
@@ -388,7 +202,8 @@ function showDownloadModal(projectId) {
         btn.addEventListener('click', (e) => {
             const url = e.currentTarget.getAttribute('data-url');
             const name = e.currentTarget.getAttribute('data-name');
-            handleDownload(url, name);
+            const isPackage = e.currentTarget.getAttribute('data-package') === 'true';
+            handleDownload(url, name, isPackage);
         });
     });
 
@@ -398,10 +213,105 @@ function showDownloadModal(projectId) {
     }
 }
 
+// Helper: Render a platform section with downloads
+function renderPlatformSection(platform, iconClass, label, downloads, projectName = '') {
+    const isBranchLinux = projectName === 'Branch' && platform === 'linux';
+    
+    return `
+        <div class="border rounded-lg overflow-hidden">
+            <div class="bg-gray-50 px-4 py-3 flex items-center justify-between cursor-pointer toggle-platform" data-platform="${platform}">
+                <div class="flex items-center space-x-3">
+                    <i class="${iconClass} text-2xl"></i>
+                    <span class="font-semibold">${label}</span>
+                </div>
+                <i class="fas fa-chevron-down transition-transform" id="${platform}-icon"></i>
+            </div>
+            <div id="${platform}-downloads" class="p-4 space-y-3 hidden">
+                ${downloads.map(download => {
+                    // Special handling for AUR package manager option
+                    // Inside the renderPlatformSection function, where we render the AUR option:
+                if (download.isPackage && isBranchLinux) {
+                    return `
+                        <div class="border rounded-lg p-4 bg-slate-50">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-medium text-slate-800">${download.name}</span>
+                                        ${download.autoUpdates ? `
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800" 
+                                                title="${download.updateInfo || 'Auto-updates with package manager'}">
+                                                <i class="fas fa-sync-alt mr-1"></i>
+                                                Auto-updates
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                    <div class="text-sm text-slate-600">${download.description}</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">yay -S branch</code>
+                                    <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="yay -S branch">Copy</button>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">paru -S branch</code>
+                                    <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="paru -S branch">Copy</button>
+                                </div>
+                                <details class="mt-2 text-xs text-slate-600">
+                                    <summary class="cursor-pointer hover:text-slate-800 flex items-center gap-1">
+                                        <i class="fas fa-info-circle"></i>
+                                        How updates work
+                                    </summary>
+                                    <div class="mt-2 p-3 bg-slate-100 rounded text-xs space-y-2">
+                                        <p class="font-medium text-slate-700">✅ With AUR helper (yay/paru):</p>
+                                        <code class="block bg-white px-2 py-1 rounded">yay -Syu  # or paru -Syu</code>
+                                        <p class="text-slate-600 mt-1">Your AUR packages (including <code>branch</code>) will automatically check for and install updates alongside your system packages.</p>
+                                        
+                                        <p class="font-medium text-slate-700 mt-3">🔧 How it works:</p>
+                                        <ul class="list-disc list-inside text-slate-600 space-y-1">
+                                            <li>The PKGBUILD uses <code>pkgver()</code> to fetch the latest version from GitHub</li>
+                                            <li>When you run <code>yay -Syu</code>, it detects new versions automatically</li>
+                                            <li>No manual intervention needed — just update your system as usual!</li>
+                                        </ul>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }
+                                    
+                                    // Regular download item
+                                    return `
+                                        <div class="border rounded-lg p-3 hover:bg-gray-50 transition">
+                                            <div class="flex justify-between items-start">
+                                                <div>
+                                                    <div class="font-medium">${download.name}</div>
+                                                    <div class="text-sm text-gray-600 mt-1">${download.size}${download.description ? ` • ${download.description}` : ''}</div>
+                                                </div>
+                                                <button class="download-file bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition" 
+                                                        data-url="${download.url}" 
+                                                        data-name="${projectName}"
+                                                        data-package="${download.isPackage || false}">
+                                                    ${download.isPackage ? 'Copy Command' : 'Download'}
+                                                </button>
+                                            </div>
+                                            ${download.sha256 ? `
+                                                <div class="mt-2 text-xs text-gray-500">
+                                                    SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
 // Close download modal
 function closeDownloadModal() {
     const modal = document.getElementById('downloadModal');
-    if (modal) modal.remove();
+    if (modal) modal.classList.add('hidden');
 }
 
 // Toggle platform section
@@ -430,11 +340,21 @@ function detectOS() {
 }
 
 // DOWNLOAD HANDLER
-function handleDownload(url, projectName) {
+function handleDownload(url, projectName, isPackage = false) {
+    if (isPackage) {
+        // For package manager commands, copy to clipboard instead of downloading
+        navigator.clipboard.writeText(url).then(() => {
+            showSnackbar(`Command copied: ${url}`, 'success');
+        }).catch(() => {
+            showSnackbar(`Select and copy: ${url}`, 'info');
+        });
+        return;
+    }
+    
     const cleanUrl = url.trim();
     
-    if (!cleanUrl || cleanUrl === '#') {
-        showSnackbar(`Download link not available yet for ${projectName}`, 'info');
+    if (!cleanUrl || cleanUrl === '#' || cleanUrl.startsWith('git clone')) {
+        showSnackbar(`Install via terminal (see instructions above)`, 'info');
         return;
     }
 
@@ -508,6 +428,19 @@ function showSnackbar(message, type = 'info') {
     }, 3000);
 }
 
+// Add copy button listeners dynamically
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('copy-btn')) {
+        const text = e.target.getAttribute('data-copy');
+        navigator.clipboard.writeText(text).then(() => {
+            const original = e.target.textContent;
+            e.target.textContent = 'Copied!';
+            setTimeout(() => e.target.textContent = original, 2000);
+            showSnackbar('Command copied to clipboard!', 'success');
+        });
+    }
+});
+
 // Add animations/styles
 const style = document.createElement('style');
 style.textContent = `
@@ -528,6 +461,12 @@ style.textContent = `
     .rotate-180 {
         transform: rotate(180deg);
         transition: transform 0.3s ease;
+    }
+    details summary {
+        list-style: none;
+    }
+    details summary::-webkit-details-marker {
+        display: none;
     }
 `;
 document.head.appendChild(style);
