@@ -105,6 +105,11 @@ function createProjectCard(project) {
                         ${project.version}
                     </span>
                 </div>
+                ${project.name === "Branch" ? `
+                    <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full ml-2" title="Simple CLI-style usage">
+                        <i class="fas fa-terminal mr-1"></i>Easy Start
+                    </span>
+                ` : ''}
                 <p class="text-gray-600 mb-4">${project.description}</p>
                 
                 <div class="mb-4">
@@ -133,6 +138,7 @@ function createProjectCard(project) {
 }
 
 // DOWNLOAD MODAL
+// DOWNLOAD MODAL - FIXED VERSION
 function showDownloadModal(projectId) {
     const project = PROJECTS.find(p => p.id === projectId);
     if (!project) return;
@@ -150,54 +156,105 @@ function showDownloadModal(projectId) {
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
-                <div id="downloadContent" class="p-6">
+                <div id="downloadContent" class="p-6 space-y-6">
                     <!-- Content injected below -->
                 </div>
             </div>
         `;
         document.body.appendChild(modal);
-        
         modal.querySelector('.close-download-modal').addEventListener('click', closeDownloadModal);
     }
     
     modal.classList.remove('hidden');
-
-    const userOS = detectOS();
     const downloadContent = document.getElementById('downloadContent');
+    const userOS = detectOS();
     
-    downloadContent.innerHTML = `
-        <div class="space-y-6">
-            ${userOS ? `
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                    <p class="text-blue-800 font-medium">Detected your OS: <span class="capitalize">${userOS}</span></p>
-                    <p class="text-blue-700 text-sm mt-1">Recommended downloads for your system:</p>
-                </div>
-            ` : ''}
-
-            <!-- Windows Downloads -->
-            ${renderPlatformSection('windows', 'fab fa-windows text-blue-600', 'Windows', project.downloads.windows)}
-
-            <!-- macOS Downloads -->
-            ${renderPlatformSection('mac', 'fab fa-apple text-gray-800', 'macOS', project.downloads.mac)}
-
-            <!-- Linux Downloads -->
-            ${renderPlatformSection('linux', 'fab fa-linux text-gray-800', 'Linux', project.downloads.linux, project.name)}
-
-            <div class="text-center text-sm text-gray-500 pt-4 border-t">
-                <p>Having trouble? <a href="#contact" class="text-purple-600 hover:text-purple-700">Contact us</a></p>
+    // 🎯 Build content array (order matters!)
+    let contentParts = [];
+    
+    // 1. OS detection banner
+    if (userOS) {
+        contentParts.push(`
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <p class="text-blue-800 font-medium">Detected your OS: <span class="capitalize">${userOS}</span></p>
+                <p class="text-blue-700 text-sm mt-1">Recommended downloads for your system:</p>
             </div>
+        `);
+    }
+    
+    // 2. 🎯 "How to Use" section for Branch (BEFORE downloads)
+    if (project.name === "Branch" && project.usage) {
+        const usage = project.usage;
+        contentParts.push(`
+            <div class="border rounded-lg overflow-hidden bg-gradient-to-r from-purple-50 to-blue-50">
+                <div class="px-4 py-3 bg-purple-100 border-b flex items-center gap-2">
+                    <i class="fas fa-rocket text-purple-600"></i>
+                    <h4 class="font-semibold text-purple-900">${usage.title}</h4>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div class="space-y-3">
+                        ${usage.steps.map(step => `
+                            <div class="flex gap-3">
+                                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">
+                                    ${step.step}
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-slate-800">${step.title}</div>
+                                    ${step.command ? `
+                                        <div class="mt-1 flex items-center gap-2">
+                                            <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">${step.command}</code>
+                                            ${step.command !== "" ? `
+                                                <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs" data-copy="${step.command}">
+                                                    Copy
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    ` : ''}
+                                    <div class="text-sm text-slate-600 mt-1">${step.description}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${usage.tips ? `
+                        <div class="pt-3 border-t border-purple-200">
+                            <div class="text-sm font-medium text-slate-700 mb-2">💡 Pro Tips:</div>
+                            <ul class="space-y-1">
+                                ${usage.tips.map(tip => `
+                                    <li class="text-sm text-slate-600">${tip}</li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `);
+    }
+    
+    // 3. Platform download sections
+    contentParts.push(
+        renderPlatformSection('windows', 'fab fa-windows text-blue-600', 'Windows', project.downloads.windows),
+        renderPlatformSection('mac', 'fab fa-apple text-gray-800', 'macOS', project.downloads.mac),
+        renderPlatformSection('linux', 'fab fa-linux text-gray-800', 'Linux', project.downloads.linux, project.name)
+    );
+    
+    // 4. Contact help footer
+    contentParts.push(`
+        <div class="text-center text-sm text-gray-500 pt-4 border-t">
+            <p>Having trouble? <a href="#contact" class="text-purple-600 hover:text-purple-700">Contact us</a></p>
         </div>
-    `;
-
-    // Setup platform toggle listeners
+    `);
+    
+    // ✅ Render all parts at once (no overwriting!)
+    downloadContent.innerHTML = contentParts.join('');
+    
+    // Setup event listeners AFTER content is rendered
     document.querySelectorAll('.toggle-platform').forEach(el => {
         el.addEventListener('click', (e) => {
             const platform = e.currentTarget.getAttribute('data-platform');
             togglePlatform(platform);
         });
     });
-
-    // Setup download button listeners
+    
     document.querySelectorAll('.download-file').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const url = e.currentTarget.getAttribute('data-url');
@@ -206,13 +263,14 @@ function showDownloadModal(projectId) {
             handleDownload(url, name, isPackage);
         });
     });
-
+    
     // Auto-expand detected OS
     if (userOS && ['windows', 'mac', 'linux'].includes(userOS)) {
         togglePlatform(userOS, true);
     }
 }
 
+// Helper: Render a platform section with downloads
 // Helper: Render a platform section with downloads
 function renderPlatformSection(platform, iconClass, label, downloads, projectName = '') {
     const isBranchLinux = projectName === 'Branch' && platform === 'linux';
@@ -229,85 +287,90 @@ function renderPlatformSection(platform, iconClass, label, downloads, projectNam
             <div id="${platform}-downloads" class="p-4 space-y-3 hidden">
                 ${downloads.map(download => {
                     // Special handling for AUR package manager option
-                    // Inside the renderPlatformSection function, where we render the AUR option:
-                if (download.isPackage && isBranchLinux) {
-                    return `
-                        <div class="border rounded-lg p-4 bg-slate-50">
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-medium text-slate-800">${download.name}</span>
-                                        ${download.autoUpdates ? `
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800" 
-                                                title="${download.updateInfo || 'Auto-updates with package manager'}">
-                                                <i class="fas fa-sync-alt mr-1"></i>
-                                                Auto-updates
-                                            </span>
-                                        ` : ''}
-                                    </div>
-                                    <div class="text-sm text-slate-600">${download.description}</div>
-                                </div>
-                            </div>
-                            <div class="mt-3 space-y-2">
-                                <div class="flex items-center gap-2">
-                                    <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">yay -S branch</code>
-                                    <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="yay -S branch">Copy</button>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">paru -S branch</code>
-                                    <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="paru -S branch">Copy</button>
-                                </div>
-                                <details class="mt-2 text-xs text-slate-600">
-                                    <summary class="cursor-pointer hover:text-slate-800 flex items-center gap-1">
-                                        <i class="fas fa-info-circle"></i>
-                                        How updates work
-                                    </summary>
-                                    <div class="mt-2 p-3 bg-slate-100 rounded text-xs space-y-2">
-                                        <p class="font-medium text-slate-700">✅ With AUR helper (yay/paru):</p>
-                                        <code class="block bg-white px-2 py-1 rounded">yay -Syu  # or paru -Syu</code>
-                                        <p class="text-slate-600 mt-1">Your AUR packages (including <code>branch</code>) will automatically check for and install updates alongside your system packages.</p>
-                                        
-                                        <p class="font-medium text-slate-700 mt-3">🔧 How it works:</p>
-                                        <ul class="list-disc list-inside text-slate-600 space-y-1">
-                                            <li>The PKGBUILD uses <code>pkgver()</code> to fetch the latest version from GitHub</li>
-                                            <li>When you run <code>yay -Syu</code>, it detects new versions automatically</li>
-                                            <li>No manual intervention needed — just update your system as usual!</li>
-                                        </ul>
-                                    </div>
-                                </details>
-                            </div>
-                        </div>
-                    `;
-                }
-                                    
-                                    // Regular download item
-                                    return `
-                                        <div class="border rounded-lg p-3 hover:bg-gray-50 transition">
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <div class="font-medium">${download.name}</div>
-                                                    <div class="text-sm text-gray-600 mt-1">${download.size}${download.description ? ` • ${download.description}` : ''}</div>
-                                                </div>
-                                                <button class="download-file bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition" 
-                                                        data-url="${download.url}" 
-                                                        data-name="${projectName}"
-                                                        data-package="${download.isPackage || false}">
-                                                    ${download.isPackage ? 'Copy Command' : 'Download'}
-                                                </button>
-                                            </div>
-                                            ${download.sha256 ? `
-                                                <div class="mt-2 text-xs text-gray-500">
-                                                    SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
-                                                </div>
+                    if (download.isPackage && isBranchLinux) {
+                        return `
+                            <div class="border rounded-lg p-4 bg-slate-50">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-medium text-slate-800">${download.name}</span>
+                                            ${download.autoUpdates ? `
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800" 
+                                                      title="${download.updateInfo || 'Auto-updates with package manager'}">
+                                                    <i class="fas fa-sync-alt mr-1"></i>
+                                                    Auto-updates
+                                                </span>
                                             ` : ''}
                                         </div>
-                                    `;
-                                }).join('')}
+                                        <div class="text-sm text-slate-600">${download.description}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">yay -S branch</code>
+                                        <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="yay -S branch">Copy</button>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">paru -S branch</code>
+                                        <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="paru -S branch">Copy</button>
+                                    </div>
+                                    <details class="mt-2 text-xs text-slate-600">
+                                        <summary class="cursor-pointer hover:text-slate-800 flex items-center gap-1">
+                                            <i class="fas fa-info-circle"></i>
+                                            How updates work
+                                        </summary>
+                                        <div class="mt-2 p-3 bg-slate-100 rounded text-xs space-y-2">
+                                            <p class="font-medium text-slate-700">✅ With AUR helper (yay/paru):</p>
+                                            <code class="block bg-white px-2 py-1 rounded">yay -Syu  # or paru -Syu</code>
+                                            <p class="text-slate-600 mt-1">Your AUR packages (including <code>branch</code>) will automatically check for and install updates alongside your system packages.</p>
+                                            <p class="font-medium text-slate-700 mt-3">🔧 How it works:</p>
+                                            <ul class="list-disc list-inside text-slate-600 space-y-1">
+                                                <li>The PKGBUILD uses <code>pkgver()</code> to fetch the latest version from GitHub</li>
+                                                <li>When you run <code>yay -Syu</code>, it detects new versions automatically</li>
+                                                <li>No manual intervention needed — just update your system as usual!</li>
+                                            </ul>
+                                        </div>
+                                    </details>
+                                </div>
                             </div>
+                        `;
+                    }
+                    
+                    // Regular download item (with optional install command for .deb)
+                    return `
+                        <div class="border rounded-lg p-3 hover:bg-gray-50 transition">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="font-medium">${download.name}</div>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        ${download.size}${download.description ? ` • ${download.description}` : ''}
+                                    </div>
+                                    ${download.installCommand ? `
+                                        <div class="mt-2 flex items-center gap-2">
+                                            <code class="bg-slate-200 px-2 py-1 rounded text-xs flex-1">${download.installCommand}</code>
+                                            <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-2 py-0.5 rounded text-xs" data-copy="${download.installCommand}">Copy</button>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <button class="download-file bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition" 
+                                        data-url="${download.url}" 
+                                        data-name="${projectName}"
+                                        data-package="${download.isPackage || false}">
+                                    ${download.isPackage ? 'Copy Command' : 'Download'}
+                                </button>
+                            </div>
+                            ${download.sha256 ? `
+                                <div class="mt-2 text-xs text-gray-500">
+                                    SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
-                }
-
+                }).join('')}
+            </div>
+        </div>
+    `;
+}
 // Close download modal
 function closeDownloadModal() {
     const modal = document.getElementById('downloadModal');

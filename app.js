@@ -270,7 +270,45 @@ function showDownloadModal(projectId) {
                                 <div class="mt-2 text-xs text-gray-500">
                                     SHA256: <code class="bg-gray-100 px-1 py-0.5 rounded">${download.sha256.substring(0, 16)}...</code>
                                 </div>
-                            ` : ""}
+                            ` : ''}
+                            ${download.usage ? `   ← ✅ Just remove the broken comment line entirely
+                                <details class="mt-3 border-t pt-3">
+                                    <summary class="cursor-pointer text-sm font-medium text-purple-600 hover:text-purple-700 flex items-center gap-1">
+                                        <i class="fas fa-question-circle"></i>
+                                        How to install this binary
+                                    </summary>
+                                    <div class="mt-3 p-3 bg-slate-50 rounded text-sm space-y-3">
+                                        <div class="font-medium text-slate-700">${download.usage.title}</div>
+                                        <div class="space-y-3">
+                                            ${download.usage.steps.map(step => `
+                                                <div class="flex gap-2">
+                                                    <span class="flex-shrink-0 w-5 h-5 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">${step.step}</span>
+                                                    <div>
+                                                        <div class="font-medium text-slate-800">${step.title}</div>
+                                                        ${step.command ? `
+                                                            <div class="mt-1 flex items-center gap-2">
+                                                                <code class="bg-slate-200 px-2 py-1 rounded text-xs flex-1">${step.command}</code>
+                                                                <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-2 py-0.5 rounded text-xs" data-copy="${step.command}">Copy</button>
+                                                            </div>
+                                                        ` : ''}
+                                                        <div class="text-xs text-slate-600 mt-1">${step.description}</div>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                        ${download.usage.tips ? `
+                                            <div class="pt-2 border-t border-slate-200">
+                                                <div class="text-xs font-medium text-slate-700 mb-1">💡 Tips:</div>
+                                                <ul class="space-y-1">
+                                                    ${download.usage.tips.map(tip => `
+                                                        <li class="text-xs text-slate-600">${tip}</li>
+                                                    `).join('')}
+                                                </ul>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </details>
+                            ` : ''}
                         </div>
                     `).join("")}
                 </div>

@@ -70,48 +70,126 @@ export const PROJECTS = [
         version: "v1.0.0",
         size: "Varies by platform"
     },
-    {
-        id: 3,
-        name: "Branch",
-        description: "Code tree visualization and management tool for developers",
-        category: "Development",
-        section: "devsection",
-        sectionName: "Dev Section",
-        features: ["Code tree visualization", "File search", "Syntax highlighting", "Project navigation", "AUR package support"],
-        downloads: {
-            windows: [
-                { name: "Windows Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-windows-x86_64.exe", size: "16.7 MB", sha256: "" }
-            ],
-            mac: [
-                { name: "Mac Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.0.0/branch-macos-x86_64", size: "16.3 MB", sha256: "" }
-            ],
-            linux: [
-                // 🎯 Arch Linux - AUR (Package Manager)
-                { 
-                    name: "Arch Linux (AUR)", 
-                    url: "#", 
-                    size: "Package Manager", 
-                    sha256: "",
-                    isPackage: true,
-                    packageManager: {
-                        yay: "yay -S branch",
-                        paru: "paru -S branch",
-                        manual: "git clone https://aur.archlinux.org/branch.git && cd branch && makepkg -si"
-                    },
-                    description: "Install via AUR helper (recommended)"
+    // ... inside the Branch project object, add this field:
+// website/data.js - Replace the entire Branch project object with this:
+{
+    id: 3,
+    name: "Branch",
+    description: "Code tree visualization and management tool for developers",
+    category: "Development",
+    section: "devsection",
+    sectionName: "Dev Section",
+    features: ["Code tree visualization", "File search", "Syntax highlighting", "Project navigation", "AUR package support"],
+    
+    // 🎯 How to Use instructions
+    usage: {
+        title: "🚀 How to Use Branch",
+        steps: [
+            {
+                step: 1,
+                title: "Navigate to your project",
+                command: "cd /path/to/your/project",
+                description: "Open your terminal and change to the directory you want to explore."
+            },
+            {
+                step: 2,
+                title: "Launch Branch",
+                command: "branch",
+                description: "Run the branch command. The app will open showing your project's file tree."
+            },
+            {
+                step: 3,
+                title: "Explore & Export",
+                command: "",
+                description: "Use checkboxes to select files, then copy as Markdown, JSON, or plain text for AI prompts or documentation."
+            }
+            
+        ],
+        tips: [
+            "💡 Tip: Use the search bar to quickly find folders",
+            "💡 Tip: Click folder names to expand/collapse without selecting",
+            "💡 Tip: Select a folder to auto-include all files within it"
+        ]
+    },
+    
+    // ✅ Fixed: Actual download links
+    downloads: {
+        windows: [
+            { name: "Windows Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.2.0/branch-windows-x86_64.exe", size: "16.7 MB", sha256: "" }
+        ],
+        mac: [
+            { name: "Mac Binary", url: "https://github.com/butterman28/Dev-Section/releases/download/v1.2.0/branch-macos-x86_64", size: "16.3 MB", sha256: "" }
+        ],
+        linux: [
+            // 🎯 Arch Linux - AUR
+            { 
+                name: "Arch Linux (AUR)", 
+                url: "#", 
+                size: "Package Manager", 
+                sha256: "",
+                isPackage: true,
+                autoUpdates: true,
+                updateInfo: "Auto-updates with `yay -Syu`",
+                packageManager: {
+                    yay: "yay -S branch",
+                    paru: "paru -S branch",
+                    manual: "git clone https://aur.archlinux.org/branch.git && cd branch && makepkg -si"
+
                 },
-                // Fallback: Direct binary download
-                { 
-                    name: "Linux Binary (Direct)", 
-                    url: "https://github.com/butterman28/Dev-Section/releases/download/v1.2.0/branch-linux-x86_64", 
-                    size: "18.2 MB", 
-                    sha256: "",
-                    description: "Standalone binary for any Linux distro"
+                description: "Install via AUR helper • Auto-updates with system"
+            },
+            
+            // 🎯 Debian/Ubuntu (.deb)
+
+            // 🎯 Fallback: Direct binary
+            { 
+                name: "Linux Binary (Direct)", 
+                url: "https://github.com/butterman28/Dev-Section/releases/download/v1.2.0/branch-linux-x86_64", 
+                size: "18.2 MB", 
+                sha256: "",
+                autoUpdates: false,
+                description: "Standalone binary for any Linux distro",
+                
+                // 🎯 ADD THIS: Inline usage instructions for system-wide install
+                usage: {
+                    title: "🔧 How to Install (System-Wide)",
+                    steps: [
+                        {
+                            step: 1,
+                            title: "Download the binary",
+                            command: "wget https://github.com/butterman28/Dev-Section/releases/download/v1.2.0/branch-linux-x86_64 -O branch",
+                            description: "Or click Download above to save manually."
+                        },
+                        {
+                            step: 2,
+                            title: "Make it executable",
+                            command: "chmod +x branch",
+                            description: "Grants permission to run the file."
+                        },
+                        {
+                            step: 3,
+                            title: "Move to system PATH",
+                            command: "sudo mv branch /usr/local/bin/",
+                            description: "Makes 'branch' available from any terminal."
+                        },
+                        {
+                            step: 4,
+                            title: "Run Branch",
+                            command: "branch",
+                            description: "Launch the app! Navigate to your project first if needed."
+                        }
+                    ],
+                    tips: [
+                        "💡 Tip: Use <code>which branch</code> to verify installation",
+                        "💡 Tip: To uninstall: <code>sudo rm /usr/local/bin/branch</code>",
+                        "💡 Tip: No sudo? Run from current folder: <code>./branch</code>"
+                    ]
                 }
-            ]
-        },
-        imageUrl: "./assets/images/branch.png",
-        version: "v1.2.0",
-        size: "Varies by platform"
-    }
+            }
+        ]
+    },
+    imageUrl: "./assets/images/branch.png",
+    version: "v1.2.0",
+    size: "Varies by platform"
+}
 ];
