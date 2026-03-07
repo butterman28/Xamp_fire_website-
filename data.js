@@ -75,7 +75,9 @@ export const PROJECTS = [
 {
     id: 3,
     name: "Branch",
-    description: "Code tree visualization and management tool for developers",
+    description: `Branch is a lightweight CLI tool designed to visualize and manage codebase structures for developers.It enables interactive navigation through project trees with built-in file search and syntax highlighting.
+                The core feature exports directory layouts as Markdown or JSON, ideal for feeding context to AI models.
+                Designed for speed, it runs as a standalone binary across Linux, macOS, and Windows without dependencies`,
     category: "Development",
     section: "devsection",
     sectionName: "Dev Section",
