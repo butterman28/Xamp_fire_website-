@@ -7,7 +7,15 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-50: oklch(97.1% 0.013 17.38);
     --color-red-600: oklch(57.7% 0.245 27.325);
+    --color-orange-50: oklch(98% 0.016 73.684);
+    --color-orange-100: oklch(95.4% 0.038 75.164);
+    --color-orange-200: oklch(90.1% 0.076 70.697);
+    --color-orange-600: oklch(64.6% 0.222 41.116);
+    --color-orange-700: oklch(55.3% 0.195 38.402);
+    --color-orange-800: oklch(47% 0.157 37.304);
+    --color-orange-900: oklch(40.8% 0.123 38.172);
     --color-green-100: oklch(96.2% 0.044 156.743);
     --color-green-500: oklch(72.3% 0.219 149.579);
     --color-green-600: oklch(62.7% 0.194 149.214);
@@ -537,8 +545,8 @@
   .border-gray-100 {
     border-color: var(--color-gray-100);
   }
-  .border-purple-200 {
-    border-color: var(--color-purple-200);
+  .border-orange-200 {
+    border-color: var(--color-orange-200);
   }
   .border-slate-200 {
     border-color: var(--color-slate-200);
@@ -564,20 +572,26 @@
   .bg-gray-100 {
     background-color: var(--color-gray-100);
   }
+  .bg-gray-900 {
+    background-color: var(--color-gray-900);
+  }
   .bg-green-100 {
     background-color: var(--color-green-100);
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
   }
-  .bg-purple-100 {
-    background-color: var(--color-purple-100);
+  .bg-orange-100 {
+    background-color: var(--color-orange-100);
+  }
+  .bg-orange-600 {
+    background-color: var(--color-orange-600);
+  }
+  .bg-orange-700 {
+    background-color: var(--color-orange-700);
   }
   .bg-purple-600 {
     background-color: var(--color-purple-600);
-  }
-  .bg-purple-700 {
-    background-color: var(--color-purple-700);
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
@@ -598,12 +612,12 @@
     --tw-gradient-position: to right in oklab;
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
-  .from-purple-50 {
-    --tw-gradient-from: var(--color-purple-50);
+  .from-orange-50 {
+    --tw-gradient-from: var(--color-orange-50);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
-  .to-blue-50 {
-    --tw-gradient-to: var(--color-blue-50);
+  .to-red-50 {
+    --tw-gradient-to: var(--color-red-50);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .object-cover {
@@ -722,9 +736,6 @@
   .text-blue-800 {
     color: var(--color-blue-800);
   }
-  .text-gray-200 {
-    color: var(--color-gray-200);
-  }
   .text-gray-400 {
     color: var(--color-gray-400);
   }
@@ -749,14 +760,20 @@
   .text-green-800 {
     color: var(--color-green-800);
   }
+  .text-orange-100 {
+    color: var(--color-orange-100);
+  }
+  .text-orange-600 {
+    color: var(--color-orange-600);
+  }
+  .text-orange-800 {
+    color: var(--color-orange-800);
+  }
+  .text-orange-900 {
+    color: var(--color-orange-900);
+  }
   .text-purple-600 {
     color: var(--color-purple-600);
-  }
-  .text-purple-800 {
-    color: var(--color-purple-800);
-  }
-  .text-purple-900 {
-    color: var(--color-purple-900);
   }
   .text-slate-600 {
     color: var(--color-slate-600);
@@ -812,6 +829,20 @@
       }
     }
   }
+  .hover\:bg-orange-700 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-orange-700);
+      }
+    }
+  }
+  .hover\:bg-orange-800 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-orange-800);
+      }
+    }
+  }
   .hover\:bg-purple-700 {
     &:hover {
       @media (hover: hover) {
@@ -819,24 +850,24 @@
       }
     }
   }
-  .hover\:bg-purple-800 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-purple-800);
-      }
-    }
-  }
-  .hover\:text-gray-200 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-gray-200);
-      }
-    }
-  }
   .hover\:text-gray-700 {
     &:hover {
       @media (hover: hover) {
         color: var(--color-gray-700);
+      }
+    }
+  }
+  .hover\:text-orange-100 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-orange-100);
+      }
+    }
+  }
+  .hover\:text-orange-700 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-orange-700);
       }
     }
   }

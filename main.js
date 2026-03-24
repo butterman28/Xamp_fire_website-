@@ -62,7 +62,7 @@ function renderProjectsBySection() {
                             <h3 class="text-2xl font-bold text-gray-900">${summary.title || section.name}</h3>
                             <span class="text-2xl">${summary.emoji || '✨'}</span>
                         </div>
-                        <div class="h-1 w-20 bg-purple-600 rounded-full mb-4"></div>
+                        <div class="h-1 w-20 bg-orange-600 rounded-full mb-4"></div>
                         <p class="text-gray-700 leading-relaxed max-w-3xl">
                             ${summary.summary || ''}
                         </p>
@@ -93,8 +93,8 @@ function createProjectCard(project) {
     return `
         <div class="card-hover bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <div class="relative">
-                <img src="${project.imageUrl}" alt="${project.name}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x200/667eea/ffffff?text=${encodeURIComponent(project.name)}'">
-                <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">
+                <img src="${project.imageUrl}" alt="${project.name}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/400x200/ff6b35/ffffff?text=${encodeURIComponent(project.name)}'">
+                <span class="absolute top-2 right-2 bg-orange-600 text-white text-xs px-2 py-1 rounded">
                     ${project.category}
                 </span>
             </div>
@@ -106,7 +106,7 @@ function createProjectCard(project) {
                     </span>
                 </div>
                 ${project.name === "Branch" ? `
-                    <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full ml-2" title="Simple CLI-style usage">
+                    <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full ml-2" title="Simple CLI-style usage">
                         <i class="fas fa-terminal mr-1"></i>Easy Start
                     </span>
                 ` : ''}
@@ -128,7 +128,7 @@ function createProjectCard(project) {
                     <div class="text-sm text-gray-500">
                         <i class="fas fa-download mr-1"></i> ${project.size}
                     </div>
-                    <button data-project-id="${project.id}" class="download-btn bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition inline-flex items-center">
+                    <button data-project-id="${project.id}" class="download-btn bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-semibold transition inline-flex items-center">
                         <i class="fas fa-download mr-2"></i> Download
                     </button>
                 </div>
@@ -138,7 +138,6 @@ function createProjectCard(project) {
 }
 
 // DOWNLOAD MODAL
-// DOWNLOAD MODAL - FIXED VERSION
 function showDownloadModal(projectId) {
     const project = PROJECTS.find(p => p.id === projectId);
     if (!project) return;
@@ -182,20 +181,20 @@ function showDownloadModal(projectId) {
         `);
     }
     
-    // 2. 🎯 "How to Use" section for Branch (BEFORE downloads)
+    // 2. 🎯 "How to Use" section for Branch (BEFORE downloads) - 🔥 FIRE THEME
     if (project.name === "Branch" && project.usage) {
         const usage = project.usage;
         contentParts.push(`
-            <div class="border rounded-lg overflow-hidden bg-gradient-to-r from-purple-50 to-blue-50">
-                <div class="px-4 py-3 bg-purple-100 border-b flex items-center gap-2">
-                    <i class="fas fa-rocket text-purple-600"></i>
-                    <h4 class="font-semibold text-purple-900">${usage.title}</h4>
+            <div class="border rounded-lg overflow-hidden bg-gradient-to-r from-orange-50 to-red-50">
+                <div class="px-4 py-3 bg-orange-100 border-b flex items-center gap-2">
+                    <i class="fas fa-rocket text-orange-600"></i>
+                    <h4 class="font-semibold text-orange-900">${usage.title}</h4>
                 </div>
                 <div class="p-4 space-y-4">
                     <div class="space-y-3">
                         ${usage.steps.map(step => `
                             <div class="flex gap-3">
-                                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">
+                                <div class="flex-shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white text-xs font-bold flex items-center justify-center">
                                     ${step.step}
                                 </div>
                                 <div class="flex-1">
@@ -204,7 +203,7 @@ function showDownloadModal(projectId) {
                                         <div class="mt-1 flex items-center gap-2">
                                             <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">${step.command}</code>
                                             ${step.command !== "" ? `
-                                                <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs" data-copy="${step.command}">
+                                                <button class="copy-btn bg-orange-600 hover:bg-orange-700 text-white px-2 py-1 rounded text-xs" data-copy="${step.command}">
                                                     Copy
                                                 </button>
                                             ` : ''}
@@ -216,7 +215,7 @@ function showDownloadModal(projectId) {
                         `).join('')}
                     </div>
                     ${usage.tips ? `
-                        <div class="pt-3 border-t border-purple-200">
+                        <div class="pt-3 border-t border-orange-200">
                             <div class="text-sm font-medium text-slate-700 mb-2">💡 Pro Tips:</div>
                             <ul class="space-y-1">
                                 ${usage.tips.map(tip => `
@@ -240,7 +239,7 @@ function showDownloadModal(projectId) {
     // 4. Contact help footer
     contentParts.push(`
         <div class="text-center text-sm text-gray-500 pt-4 border-t">
-            <p>Having trouble? <a href="#contact" class="text-purple-600 hover:text-purple-700">Contact us</a></p>
+            <p>Having trouble? <a href="#contact" class="text-orange-600 hover:text-orange-700">Contact us</a></p>
         </div>
     `);
     
@@ -270,7 +269,6 @@ function showDownloadModal(projectId) {
     }
 }
 
-// Helper: Render a platform section with downloads
 // Helper: Render a platform section with downloads
 function renderPlatformSection(platform, iconClass, label, downloads, projectName = '') {
     const isBranchLinux = projectName === 'Branch' && platform === 'linux';
@@ -308,11 +306,11 @@ function renderPlatformSection(platform, iconClass, label, downloads, projectNam
                                 <div class="mt-3 space-y-2">
                                     <div class="flex items-center gap-2">
                                         <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">yay -S branch</code>
-                                        <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="yay -S branch">Copy</button>
+                                        <button class="copy-btn bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-xs" data-copy="yay -S branch">Copy</button>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <code class="bg-slate-200 px-2 py-1 rounded text-sm flex-1">paru -S branch</code>
-                                        <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs" data-copy="paru -S branch">Copy</button>
+                                        <button class="copy-btn bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-xs" data-copy="paru -S branch">Copy</button>
                                     </div>
                                     <details class="mt-2 text-xs text-slate-600">
                                         <summary class="cursor-pointer hover:text-slate-800 flex items-center gap-1">
@@ -348,7 +346,7 @@ function renderPlatformSection(platform, iconClass, label, downloads, projectNam
                                     ${download.installCommand ? `
                                         <div class="mt-2 flex items-center gap-2">
                                             <code class="bg-slate-200 px-2 py-1 rounded text-xs flex-1">${download.installCommand}</code>
-                                            <button class="copy-btn bg-purple-600 hover:bg-purple-700 text-white px-2 py-0.5 rounded text-xs" data-copy="${download.installCommand}">Copy</button>
+                                            <button class="copy-btn bg-orange-600 hover:bg-orange-700 text-white px-2 py-0.5 rounded text-xs" data-copy="${download.installCommand}">Copy</button>
                                         </div>
                                     ` : ''}
                                 </div>
@@ -371,6 +369,7 @@ function renderPlatformSection(platform, iconClass, label, downloads, projectNam
         </div>
     `;
 }
+
 // Close download modal
 function closeDownloadModal() {
     const modal = document.getElementById('downloadModal');
@@ -461,7 +460,7 @@ function handleFeedbackSubmit(e) {
     closeFeedbackModal();
 }
 
-// SNACKBAR NOTIFICATION
+// SNACKBAR NOTIFICATION - 🔥 FIRE THEME
 function showSnackbar(message, type = 'info') {
     const existing = document.getElementById('snackbar');
     if (existing) existing.remove();
@@ -470,7 +469,7 @@ function showSnackbar(message, type = 'info') {
     snackbar.id = 'snackbar';
     snackbar.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-medium z-50 ${
         type === 'success' ? 'bg-green-600' : 
-        type === 'error' ? 'bg-red-600' : 'bg-purple-600'
+        type === 'error' ? 'bg-red-600' : 'bg-orange-600'
     } animate-fade-in`;
     
     snackbar.innerHTML = `
